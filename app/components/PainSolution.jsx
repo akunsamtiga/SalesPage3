@@ -1,135 +1,209 @@
-"use client"; 
-
-import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
-import { useInView } from "react-intersection-observer";
-import { ExclamationCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+"use client"
+import { motion } from "framer-motion";
+import { Smile, Lightbulb, Users, Rocket, BookOpen } from "lucide-react";
 
 const PainSolution = () => {
-  // Intersection Observer
-  const controls = useAnimation();
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
-
-  useEffect(() => {
-    if (inView) {
-      controls.start("visible");
+  const painPoints = [
+    {
+      icon: <BookOpen className="w-8 h-8 text-purple-600" />,
+      title: "Materi Tidak Menarik",
+      description: "Pelajaran tradisional membosankan dan tidak interaktif",
+      solution: "Metode belajar kami menyenangkan seperti bermain game!",
+      color: "bg-purple-100"
+    },
+    {
+      icon: <Users className="w-8 h-8 text-blue-600" />,
+      title: "Tidak Ada Komunitas",
+      description: "Sulit menemukan teman dengan minat yang sama",
+      solution: "Bergabunglah dengan komunitas kreatif kami yang ramah!",
+      color: "bg-blue-100"
+    },
+    {
+      icon: <Rocket className="w-8 h-8 text-orange-600" />,
+      title: "Tidak Ada Proyek Nyata",
+      description: "Hanya teori tanpa praktik langsung",
+      solution: "Belajar melalui proyek kreatif yang bisa dibanggakan!",
+      color: "bg-orange-100"
     }
-  }, [controls, inView]);
+  ];
+
+  // Animation variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 30 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
+
+  const hoverCard = {
+    hover: {
+      y: -10,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 10
+      }
+    }
+  };
 
   return (
-    <section ref={ref} className="py-20 px-6 md:px-12 bg-white">
-      <div className="max-w-5xl mx-auto text-center">
-        {/* Judul Section */}
-        <motion.h2
-          className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight"
-          initial="hidden"
-          animate={controls}
-          variants={{
-            hidden: { opacity: 0, y: 30 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-          }}
-        >
-          Apakah Anda Mengalami Masalah Ini?
-        </motion.h2>
-        <p className="text-gray-600 mt-4 text-lg">
-          Banyak orang menghadapi tantangan ini sebelum menemukan solusi yang tepat. Jangan khawatir, kami punya jawabannya!
-        </p>
-      </div>
-
-      {/* Grid untuk Menampilkan Masalah & Solusi */}
+    <section className="py-16 bg-gradient-to-br from-yellow-50 to-pink-50 overflow-hidden">
+      {/* Decorative elements */}
       <motion.div
-        className="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto mt-14"
-        initial="hidden"
-        animate={controls}
-        variants={{
-          hidden: { opacity: 0, y: 30 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            transition: { staggerChildren: 0.2, duration: 0.8 },
-          },
+        animate={{
+          x: [0, 15, 0],
+          y: [0, -10, 0],
+          rotate: [0, 5, 0]
         }}
-      >
-        {/* Masalah */}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="hidden lg:block absolute left-20 top-1/4 w-32 h-32 rounded-full bg-pink-200/20"
+      />
+      
+      <motion.div
+        animate={{
+          x: [0, -10, 0],
+          y: [0, 15, 0],
+          rotate: [0, -3, 0]
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2
+        }}
+        className="hidden lg:block absolute right-20 bottom-1/4 w-40 h-40 rounded-full bg-yellow-200/20"
+      />
+
+      <div className="container mx-auto px-4">
         <motion.div
-          className="bg-red-50 border-l-8 border-red-500 p-8 rounded-lg shadow-lg transition duration-300 hover:shadow-xl hover:-translate-y-2"
-          variants={{
-            hidden: { opacity: 0, x: -50 },
-            visible: { opacity: 1, x: 0 },
-          }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-16"
         >
-          <h3 className="flex items-center text-2xl font-semibold text-red-600 mb-5">
-            <ExclamationCircleIcon className="h-7 w-7 text-red-500 mr-2" />
-            Tantangan yang Anda Hadapi
-          </h3>
-          <ul className="mt-5 space-y-4 text-gray-700 text-lg">
-            <li className="flex items-center">
-              <ExclamationCircleIcon className="h-6 w-6 text-red-400 mr-2" />
-              Sulit mendapatkan hasil maksimal?
-            </li>
-            <li className="flex items-center">
-              <ExclamationCircleIcon className="h-6 w-6 text-red-400 mr-2" />
-              Bingung harus mulai dari mana?
-            </li>
-            <li className="flex items-center">
-              <ExclamationCircleIcon className="h-6 w-6 text-red-400 mr-2" />
-              Sudah mencoba berbagai cara tapi gagal?
-            </li>
-            <li className="flex items-center">
-              <ExclamationCircleIcon className="h-6 w-6 text-red-400 mr-2" />
-              Waktu & tenaga terbuang percuma?
-            </li>
-          </ul>
+          <div className="inline-flex items-center justify-center p-4 bg-white rounded-full shadow-lg mb-6">
+            <Smile className="w-10 h-10 text-yellow-500" />
+            <Lightbulb className="w-10 h-10 text-pink-500 -ml-3" />
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-yellow-500">
+              Masalah
+            </span>{" "}
+            vs{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-pink-600">
+              Solusi
+            </span>
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Kami memahami tantangan Anda dan memiliki solusi kreatif untuk mengatasinya!
+          </p>
         </motion.div>
 
-        {/* Solusi */}
         <motion.div
-          className="bg-green-50 border-l-8 border-green-500 p-8 rounded-lg shadow-lg transition duration-300 hover:shadow-xl hover:-translate-y-2"
-          variants={{
-            hidden: { opacity: 0, x: 50 },
-            visible: { opacity: 1, x: 0 },
-          }}
-        >
-          <h3 className="flex items-center text-2xl font-semibold text-green-600 mb-5">
-            <CheckCircleIcon className="h-7 w-7 text-green-500 mr-2" />
-            Solusi Terbaik untuk Anda
-          </h3>
-          <ul className="mt-5 space-y-4 text-gray-700 text-lg">
-            <li className="flex items-center">
-              <CheckCircleIcon className="h-6 w-6 text-green-400 mr-2" />
-              🚀 Strategi yang terbukti berhasil
-            </li>
-            <li className="flex items-center">
-              <CheckCircleIcon className="h-6 w-6 text-green-400 mr-2" />
-              🔑 Langkah-langkah jelas & mudah diikuti
-            </li>
-            <li className="flex items-center">
-              <CheckCircleIcon className="h-6 w-6 text-green-400 mr-2" />
-              🛠️ Tools dan resources eksklusif
-            </li>
-            <li className="flex items-center">
-              <CheckCircleIcon className="h-6 w-6 text-green-400 mr-2" />
-              🎯 Dapatkan hasil lebih cepat & efektif
-            </li>
-          </ul>
-        </motion.div>
-      </motion.div>
-
-      {/* Call-to-Action */}
-      <div className="text-center mt-14">
-        <motion.a
-          href="#cta"
-          className="bg-blue-600 text-white px-8 py-4 rounded-md font-semibold text-xl shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105"
+          variants={container}
           initial="hidden"
-          animate={controls}
-          variants={{
-            hidden: { opacity: 0, scale: 0.9 },
-            visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.6 } },
-          }}
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
         >
-          Dapatkan Solusi Sekarang 🚀
-        </motion.a>
+          {painPoints.map((point, index) => (
+            <motion.div
+              key={index}
+              variants={{ ...item, ...hoverCard }}
+              whileHover="hover"
+              className="relative"
+            >
+              {/* Pain Point Card */}
+              <motion.div 
+                className={`p-6 rounded-2xl shadow-md mb-4 ${point.color} relative z-10`}
+                initial={{ rotate: -2 }}
+                whileHover={{ rotate: 0 }}
+              >
+                <div className="flex items-center mb-4">
+                  {point.icon}
+                  <h3 className="text-xl font-bold text-gray-800 ml-3">{point.title}</h3>
+                </div>
+                <p className="text-gray-600 mb-0">{point.description}</p>
+                
+                {/* Tear element */}
+                <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-inherit clip-path-tear"></div>
+              </motion.div>
+
+              {/* Solution Card */}
+              <motion.div 
+                className="p-6 bg-white rounded-2xl shadow-lg mt-4 border border-gray-100"
+                initial={{ rotate: 2 }}
+                whileHover={{ rotate: 0 }}
+              >
+                <div className="flex items-start">
+                  <div className="p-2 bg-green-100 rounded-full mr-4">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-green-600">
+                      <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <p className="text-gray-700 font-medium">{point.solution}</p>
+                </div>
+              </motion.div>
+
+              {/* Connector line */}
+              <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-16 bg-gradient-to-b from-purple-300 to-pink-300"></div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Animated arrow */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mt-16"
+        >
+          <motion.div
+            animate={{
+              y: [0, 10, 0]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="mx-auto text-pink-500">
+              <path d="M12 5V19M12 19L19 12M12 19L5 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <p className="text-sm text-gray-500 mt-2">Scroll untuk lanjut</p>
+          </motion.div>
+        </motion.div>
       </div>
+
+      <style jsx>{`
+        .clip-path-tear {
+          clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+        }
+      `}</style>
     </section>
   );
 };

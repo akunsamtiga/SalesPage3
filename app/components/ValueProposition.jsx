@@ -1,108 +1,246 @@
-"use client";
-
-import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
-import { useInView } from "react-intersection-observer";
-import { FaCouch, FaTools, FaShieldAlt, FaStar } from "react-icons/fa"; // Ikon furnitur
-
-const features = [
-  {
-    icon: <FaCouch className="h-12 w-12 text-[#8B5E3B]" />,
-    title: "Desain Elegan & Mewah",
-    description: "Kami menghadirkan furnitur dengan desain eksklusif yang menambah estetika ruangan Anda.",
-  },
-  {
-    icon: <FaTools className="h-12 w-12 text-[#4CAF50]" />,
-    title: "Kualitas Terbaik",
-    description: "Menggunakan material premium yang tahan lama dengan pengerjaan yang presisi.",
-  },
-  {
-    icon: <FaShieldAlt className="h-12 w-12 text-[#6A5ACD]" />,
-    title: "Jaminan Keamanan",
-    description: "Setiap produk diuji ketahanan dan keamanannya untuk kenyamanan pengguna.",
-  },
-  {
-    icon: <FaStar className="h-12 w-12 text-[#FFD700]" />,
-    title: "Dipercaya oleh Banyak Klien",
-    description: "Digunakan oleh hunian mewah dan bisnis ternama di seluruh dunia.",
-  },
-];
+"use client"
+import { motion } from "framer-motion";
+import { Sparkles, Users, Rocket, Palette, BookOpen, Code } from "lucide-react";
 
 const ValueProposition = () => {
-  // Intersection Observer
-  const controls = useAnimation();
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
-
-  useEffect(() => {
-    if (inView) {
-      controls.start("visible");
+  const valueCards = [
+    {
+      title: "Belajar Seru",
+      description: "Metode pembelajaran interaktif yang membuat belajar terasa seperti bermain",
+      icon: <Sparkles className="w-10 h-10 text-yellow-500" />,
+      color: "bg-yellow-100",
+      animation: {
+        y: [0, -10, 0],
+        transition: {
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }
+      }
+    },
+    {
+      title: "Komunitas Kreatif",
+      description: "Bergabung dengan jaringan kreator muda dari seluruh Indonesia",
+      icon: <Users className="w-10 h-10 text-purple-600" />,
+      color: "bg-purple-100",
+      animation: {
+        rotate: [0, 5, -5, 0],
+        transition: {
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }
+      }
+    },
+    {
+      title: "Proyek Nyata",
+      description: "Hasilkan karya nyata yang bisa dibanggakan dan ditunjukkan",
+      icon: <Rocket className="w-10 h-10 text-pink-600" />,
+      color: "bg-pink-100",
+      animation: {
+        scale: [1, 1.05, 1],
+        transition: {
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }
+      }
     }
-  }, [controls, inView]);
+  ];
+
+  const features = [
+    {
+      icon: <Palette className="w-6 h-6 text-blue-600" />,
+      text: "Aktivitas seni & kerajinan"
+    },
+    {
+      icon: <BookOpen className="w-6 h-6 text-green-600" />,
+      text: "Materi pembelajaran interaktif"
+    },
+    {
+      icon: <Code className="w-6 h-6 text-orange-600" />,
+      text: "Pengenalan teknologi kreatif"
+    }
+  ];
+
+  // Animation variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 30 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
 
   return (
-    <section ref={ref} className="py-20 px-6 md:px-12 bg-[#FAF3E0] text-gray-900">
-      <div className="max-w-5xl mx-auto text-center">
-        {/* Judul Section */}
-        <motion.h2
-          className="text-4xl md:text-5xl font-bold text-[#8B5E3B] leading-tight"
-          initial="hidden"
-          animate={controls}
-          variants={{
-            hidden: { opacity: 0, y: 30 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-          }}
-        >
-          Mengapa Memilih Furnitur Kami?
-        </motion.h2>
-        <p className="text-gray-700 mt-4 text-lg">
-          Kami tidak hanya menawarkan furnitur, tetapi juga pengalaman dan keindahan dalam setiap ruang.
-        </p>
-      </div>
-
-      {/* Grid untuk Value Proposition */}
+    <section className="py-16 bg-gradient-to-br from-blue-50 to-purple-50 overflow-hidden relative">
+      {/* Decorative elements */}
       <motion.div
-        className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 max-w-6xl mx-auto mt-14"
-        initial="hidden"
-        animate={controls}
-        variants={{
-          hidden: { opacity: 0, y: 30 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            transition: { staggerChildren: 0.2, duration: 0.8 },
-          },
+        animate={{
+          x: [0, 15, 0],
+          y: [0, -10, 0],
+          rotate: [0, 5, 0]
         }}
-      >
-        {features.map((feature, index) => (
-          <motion.div
-            key={index}
-            className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center hover:shadow-xl transition duration-300 transform hover:scale-105"
-            variants={{
-              hidden: { opacity: 0, y: 30 },
-              visible: { opacity: 1, y: 0 },
-            }}
-          >
-            <div className="mb-4">{feature.icon}</div>
-            <h3 className="text-xl font-semibold text-gray-800">{feature.title}</h3>
-            <p className="text-gray-600 mt-2">{feature.description}</p>
-          </motion.div>
-        ))}
-      </motion.div>
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="hidden lg:block absolute left-20 top-1/4 w-32 h-32 rounded-full bg-purple-200/20"
+      />
+      
+      <motion.div
+        animate={{
+          x: [0, -10, 0],
+          y: [0, 15, 0],
+          rotate: [0, -3, 0]
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2
+        }}
+        className="hidden lg:block absolute right-20 bottom-1/4 w-40 h-40 rounded-full bg-blue-200/20"
+      />
 
-      {/* Call-to-Action */}
-      <div className="text-center mt-14">
-        <motion.a
-          href="#cta"
-          className="bg-[#8B5E3B] text-white px-8 py-4 rounded-md font-semibold text-xl shadow-lg hover:bg-[#6E3F22] transition duration-300 transform hover:scale-105"
+      <div className="container mx-auto px-4 max-w-5xl">
+        <motion.div
+          variants={container}
           initial="hidden"
-          animate={controls}
-          variants={{
-            hidden: { opacity: 0, scale: 0.9 },
-            visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.6 } },
-          }}
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-16"
         >
-          Lihat Koleksi Kami
-        </motion.a>
+          <motion.div 
+            variants={item}
+            className="inline-flex items-center justify-center p-4 bg-white rounded-full shadow-lg mb-6"
+          >
+            <Sparkles className="w-10 h-10 text-purple-600" />
+          </motion.div>
+          <motion.h2 
+            variants={item}
+            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 px-4"
+          >
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">
+              Kenapa Memilih
+            </span>{" "}
+            Kami?
+          </motion.h2>
+          <motion.p 
+            variants={item}
+            className="text-lg text-gray-600 max-w-2xl mx-auto px-4"
+          >
+            Kami menawarkan pengalaman belajar yang unik dan menyenangkan untuk mengembangkan kreativitas
+          </motion.p>
+        </motion.div>
+
+        {/* Value cards */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 px-4"
+        >
+          {valueCards.map((card, index) => (
+            <motion.div
+              key={index}
+              variants={item}
+              className="relative"
+            >
+              <motion.div 
+                animate={card.animation}
+                className={`p-8 rounded-3xl shadow-lg ${card.color} bg-white relative overflow-hidden h-full`}
+                whileHover={{ y: -10 }}
+              >
+                <motion.div 
+                  className={`absolute -top-10 -right-10 w-32 h-32 rounded-full ${card.color.replace('100', '200')} opacity-20`}
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.2, 0.4, 0.2]
+                  }}
+                  transition={{
+                    duration: 5 + index,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+                <div className="relative z-10">
+                  <div className="mb-6">
+                    {card.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">{card.title}</h3>
+                  <p className="text-gray-600">{card.description}</p>
+                </div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Features list */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="bg-white rounded-3xl shadow-lg p-8 max-w-4xl mx-4 sm:mx-auto relative overflow-hidden"
+        >
+          <motion.h3 
+            variants={item}
+            className="text-2xl font-bold text-center text-gray-800 mb-8"
+          >
+            Apa saja yang akan kamu dapatkan?
+          </motion.h3>
+          
+          <motion.div
+            variants={container}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                variants={item}
+                className="flex items-start"
+                whileHover={{ x: 5 }}
+              >
+                <div className="p-2 rounded-full bg-blue-50 mr-4">
+                  {feature.icon}
+                </div>
+                <p className="text-gray-700">{feature.text}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Animated decorative elements */}
+          <motion.div
+            animate={{
+              rotate: [0, 360],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            className="absolute -bottom-20 -right-20 w-40 h-40 rounded-full border-8 border-dashed border-purple-200 opacity-20"
+          />
+        </motion.div>
       </div>
     </section>
   );

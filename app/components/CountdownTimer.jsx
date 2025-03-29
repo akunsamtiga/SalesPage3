@@ -1,88 +1,228 @@
-"use client";
-import { useEffect, useState } from "react";
+"use client"
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { FaCouch } from "react-icons/fa"; // Ikon furnitur
+import { AlarmClock, Rocket, PartyPopper, CalendarDays } from "lucide-react";
 
-export default function CountdownTimer() {
-  const targetDate = new Date("2025-04-01T00:00:00").getTime();
-  const [timeLeft, setTimeLeft] = useState(null);
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
-
-  const calculateTimeLeft = () => {
-    const now = new Date().getTime();
-    const difference = targetDate - now;
-
-    if (difference < 0) {
-      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-    }
-
-    return {
-      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-      minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-      seconds: Math.floor((difference % (1000 * 60)) / 1000),
-    };
-  };
+const CountdownTimer = () => {
+  // Set target date (3 days from now)
+  const targetDate = new Date();
+  targetDate.setDate(targetDate.getDate() + 3);
+  
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
 
   useEffect(() => {
-    setTimeLeft(calculateTimeLeft());
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
+      const now = new Date();
+      const difference = targetDate - now;
+
+      if (difference <= 0) {
+        clearInterval(timer);
+        return;
+      }
+
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+      setTimeLeft({ days, hours, minutes, seconds });
     }, 1000);
+
     return () => clearInterval(timer);
   }, []);
 
-  if (!timeLeft) return null;
+  // Animation variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 30 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
+
+  const timeUnitAnimation = {
+    hover: {
+      scale: 1.1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 10
+      }
+    }
+  };
+
+  const timeUnits = [
+    { name: "days", icon: <CalendarDays className="w-6 h-6" /> },
+    { name: "hours", icon: <AlarmClock className="w-6 h-6" /> },
+    { name: "minutes", icon: <AlarmClock className="w-6 h-6" /> },
+    { name: "seconds", icon: <AlarmClock className="w-6 h-6" /> }
+  ];
 
   return (
-    <motion.div
-      ref={ref}
-      className="flex flex-col items-center justify-center bg-[#FAF3E0] p-10 my-5 md:my-10 rounded-xl w-full max-w-lg mx-auto text-center relative overflow-hidden"
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8 }}
-    >
-      {/* Title */}
-      <motion.h2
-        className="text-[#6B4226] text-2xl font-semibold tracking-wide"
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      >
-        Koleksi Baru Segera Hadir ✨
-      </motion.h2>
-      <p className="text-[#8B4513] text-sm mt-2">
-        Hadirkan sentuhan elegan ke dalam rumah Anda.
-      </p>
+    <section className="py-16 bg-gradient-to-br from-pink-50 to-purple-50 overflow-hidden">
+      {/* Decorative elements */}
+      <motion.div
+        animate={{
+          x: [0, 15, 0],
+          y: [0, -10, 0],
+          rotate: [0, 5, 0]
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="hidden lg:block absolute left-20 top-1/4 w-32 h-32 rounded-full bg-purple-200/20"
+      />
+      
+      <motion.div
+        animate={{
+          x: [0, -10, 0],
+          y: [0, 15, 0],
+          rotate: [0, -3, 0]
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2
+        }}
+        className="hidden lg:block absolute right-20 bottom-1/4 w-40 h-40 rounded-full bg-pink-200/20"
+      />
 
-      {/* Timer */}
-      <div className="flex space-x-4 mt-6">
-        {Object.entries(timeLeft).map(([label, value], index) => (
-          <motion.div
-            key={label}
-            className="flex flex-col items-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
+      <div className="container mx-auto px-4">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-16"
+        >
+          <motion.div 
+            variants={item}
+            className="inline-flex items-center justify-center p-4 bg-white rounded-full shadow-lg mb-6"
           >
-            <motion.div
-              key={value}
-              className="bg-[#D2B48C] text-white font-bold text-3xl w-16 h-16 flex items-center justify-center rounded-lg transition-all duration-500"
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ repeat: Infinity, duration: 1 }}
-            >
-              {value}
-            </motion.div>
-            <p className="text-xs mt-2 text-[#6B4226] uppercase">{label}</p>
+            <Rocket className="w-10 h-10 text-purple-600" />
+            <PartyPopper className="w-10 h-10 text-pink-600 -ml-3" />
           </motion.div>
-        ))}
-      </div>
+          <motion.h2 
+            variants={item}
+            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+          >
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600">
+              Waktu Terbatas!
+            </span>{" "}
+            Diskon Spesial
+          </motion.h2>
+          <motion.p 
+            variants={item}
+            className="text-lg text-gray-600 max-w-2xl mx-auto"
+          >
+            Daftar sekarang dan dapatkan potongan harga 30% sebelum promo berakhir!
+          </motion.p>
+        </motion.div>
 
-      {/* Ikon */}
-      <motion.div className="mt-6" whileHover={{ scale: 1.1 }}>
-        <FaCouch className="text-[#6B4226] text-4xl" />
-      </motion.div>
-    </motion.div>
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex justify-center gap-4 mb-12 flex-wrap"
+        >
+          {timeUnits.map((unit, index) => (
+            <motion.div
+              key={unit.name}
+              variants={item}
+              whileHover="hover"
+              className="flex flex-col items-center"
+            >
+              <div className="w-24 h-24 bg-white rounded-xl shadow-lg flex flex-col items-center justify-center relative overflow-hidden">
+                {/* Animated background */}
+                <motion.div 
+                  className={`absolute inset-0 ${index % 2 === 0 ? 'bg-pink-100' : 'bg-purple-100'} opacity-30`}
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.3, 0.5, 0.3]
+                  }}
+                  transition={{
+                    duration: 5 + index,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+                
+                <span className="text-3xl font-bold text-gray-900 z-10">
+                  {timeLeft[unit.name].toString().padStart(2, '0')}
+                </span>
+                <div className="flex items-center mt-2 z-10">
+                  {unit.icon}
+                  <span className="ml-2 text-xs font-medium text-gray-500 uppercase">
+                    {unit.name}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
+          <motion.button
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 10px 25px -5px rgba(236, 72, 153, 0.3)"
+            }}
+            whileTap={{ scale: 0.98 }}
+            className="px-8 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all"
+          >
+            Daftar Sekarang
+          </motion.button>
+          
+          <motion.div
+            animate={{
+              scale: [1, 1.05, 1],
+              opacity: [0.8, 1, 0.8]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="mt-6 text-sm text-gray-500 flex items-center justify-center"
+          >
+            <AlarmClock className="w-4 h-4 mr-2" />
+            Promo berakhir {targetDate.toLocaleDateString()}
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
   );
-}
+};
+
+export default CountdownTimer;
