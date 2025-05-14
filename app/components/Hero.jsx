@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
+import Head from 'next/head';
 
 const Hero = () => {
   const constraintsRef = useRef(null);
@@ -26,33 +27,54 @@ const Hero = () => {
   const products = [
     {
       name: "Sofa Minimalis",
-      image: "/images/sofa.jpg",
+      image: "/images/sofa.webp",
       color: "bg-pink-100",
     },
     {
       name: "Meja Kayu Solid",
-      image: "/images/sofa.jpg",
+      image: "/images/table.webp",
       color: "bg-blue-100",
     },
     {
       name: "Rak Buku Elegan",
-      image: "/images/sofa.jpg",
+      image: "/images/bookshelf.webp",
       color: "bg-yellow-100",
     },
   ];
 
   // Gambar avatar dari internet
   const avatars = [
-    "https://randomuser.me/api/portraits/women/44.jpg",
-    "https://randomuser.me/api/portraits/men/32.jpg",
-    "https://randomuser.me/api/portraits/women/68.jpg"
+    "/images/pp2.png",
+    "/images/pp5.png",
+    "/images/pp6.png"
   ];
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 py-16 md:py-24 px-4 max-w-screen">
+      <Head>
+        <link rel="preload" href="/images/sofa.webp" as="image" />
+      </Head>
+      
+      {/* Brand Logo/Title */}
+      <div className="absolute top-6 left-6 z-50">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-2"
+        >
+          {/* You can replace this with your actual logo image */}
+          <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+            <span className="text-white font-bold text-sm">W</span>
+          </div>
+          <span className="text-xl font-bold text-gray-800">Woodora</span>
+        </motion.div>
+      </div>
+      
       {/* Background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
+          style={{ willChange: 'transform' }}
           animate={{
             x: [0, -10, 0],
             y: [0, 5, 0],
@@ -63,9 +85,10 @@ const Hero = () => {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute top-10 left-10 w-24 h-24 rounded-full bg-yellow-200 opacity-20"
+          className="absolute blur-xl top-10 left-10 w-24 h-24 rounded-full bg-yellow-200 opacity-20"
         />
         <motion.div
+          style={{ willChange: 'transform' }}
           animate={{
             x: [0, 15, 0],
             y: [0, -10, 0],
@@ -75,9 +98,8 @@ const Hero = () => {
             duration: 7,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: 1,
           }}
-          className="absolute bottom-20 right-20 w-32 h-32 rounded-full bg-pink-200 opacity-20"
+          className="absolute blur-xl bottom-20 right-20 w-32 h-32 rounded-full bg-pink-200 opacity-20"
         />
       </div>
 
@@ -92,6 +114,7 @@ const Hero = () => {
           {/* Text content */}
           <motion.div variants={item} className="lg:w-1/2">
             <motion.h1
+              style={{ willChange: 'transform' }}
               animate={{
                 y: [0, -3, 0],
               }}
@@ -107,13 +130,13 @@ const Hero = () => {
               untuk Rumah Impian
             </motion.h1>
             
-            <motion.p variants={item} className="text-lg md:text-xl text-gray-600 mb-8">
+            <motion.p variants={item} className="text-lg md:text-xl text-gray-700 mb-8">
               Temukan koleksi furniture eksklusif yang akan mengubah rumah Anda menjadi ruang hidup yang indah dan nyaman.
             </motion.p>
             
             {/* Product highlights */}
             <motion.div variants={item} className="mb-8">
-              <h3 className="font-semibold text-gray-700 mb-3">Koleksi Kami:</h3>
+              <h3 className="font-semibold text-gray-800 mb-3">Koleksi Kami:</h3>
               <div className="flex flex-wrap gap-3">
                 {products.map((product, index) => (
                   <motion.div
@@ -131,6 +154,7 @@ const Hero = () => {
             
             <motion.div variants={item} className="flex flex-col sm:flex-row gap-4">
               <motion.button
+                aria-label="Lihat Katalog Lengkap"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all"
@@ -138,6 +162,7 @@ const Hero = () => {
                 Lihat Katalog Lengkap
               </motion.button>
               <motion.button
+                aria-label="Konsultasi Desain Gratis"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-3 bg-white text-purple-600 border-2 border-purple-600 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all"
@@ -161,11 +186,12 @@ const Hero = () => {
                 whileHover={{ scale: 1.02 }}
                 className="relative z-10 bg-white p-6 rounded-2xl shadow-xl border border-gray-100"
               >
-                <div className="aspect-w-16 aspect-h-9 mb-4 overflow-hidden rounded-lg relative h-48">
+                <div className="aspect-auto mb-4 overflow-hidden rounded-lg relative h-full">
                   <Image
                     src="/images/sofa.jpg"
                     alt="Sofa Minimalis Luxurious"
-                    fill
+                    width={600}
+                    height={400}
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority
@@ -175,7 +201,7 @@ const Hero = () => {
                 <div className="flex justify-between items-start">
                   <div>
                     <h3 className="font-bold text-xl text-gray-900">Paket Ruang Tamu Lengkap</h3>
-                    <p className="text-gray-600">Untuk ruang 3x4 meter</p>
+                    <p className="text-gray-700">Untuk ruang 3x4 meter</p>
                   </div>
                   <div className="bg-yellow-100 px-3 py-1 rounded-full">
                     <span className="font-bold text-yellow-800">Terlaris!</span>
@@ -190,17 +216,18 @@ const Hero = () => {
                           <Image
                             src={avatar}
                             alt={`Pelanggan ${index + 1}`}
-                            fill
+                            width={32}
+                            height={32}
                             className="object-cover rounded-full"
                             sizes="32px"
                           />
                         </div>
                       ))}
                     </div>
-                    <span className="ml-2 text-sm text-gray-500">+120 pembeli</span>
+                    <span className="ml-2 text-sm text-gray-600">+120 pembeli</span>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-gray-500 line-through">Rp 4.999.000</p>
+                    <p className="text-sm text-gray-600 line-through">Rp 4.999.000</p>
                     <p className="font-bold text-lg text-purple-600">Rp 2.999.000</p>
                   </div>
                 </div>
@@ -212,6 +239,7 @@ const Hero = () => {
                 dragConstraints={constraintsRef}
                 whileHover={{ scale: 1.1 }}
                 className="absolute -top-8 -left-8 w-24 h-32 bg-white rounded-lg shadow-md p-2 border border-gray-200 z-20 overflow-hidden"
+                style={{ willChange: 'transform' }}
                 animate={{
                   y: [0, -5, 0],
                 }}
@@ -223,9 +251,11 @@ const Hero = () => {
               >
                 <div className="relative w-full h-16 rounded-md mb-1 overflow-hidden">
                   <Image
-                    src="/images/bg4.jpg"
+                    src="/images/bg3.jpg"
                     alt="Meja Makan Kayu"
-                    fill
+                    width={96}
+                    height={64}
+                    loading="lazy"
                     className="object-cover"
                     sizes="96px"
                   />
@@ -244,6 +274,7 @@ const Hero = () => {
                 dragConstraints={constraintsRef}
                 whileHover={{ scale: 1.1 }}
                 className="absolute bottom-34 -right-4 w-28 h-36 bg-white rounded-lg shadow-md p-2 border border-gray-200 z-20 overflow-hidden"
+                style={{ willChange: 'transform' }}
                 animate={{
                   y: [0, 5, 0],
                 }}
@@ -256,9 +287,11 @@ const Hero = () => {
               >
                 <div className="relative w-full h-20 rounded-md mb-1 overflow-hidden">
                   <Image
-                    src="/images/bg3.jpg"
+                    src="/images/bg4.jpg"
                     alt="Kursi Tamu Elegan"
-                    fill
+                    width={112}
+                    height={80}
+                    loading="lazy"
                     className="object-cover"
                     sizes="112px"
                   />
@@ -281,6 +314,7 @@ const Hero = () => {
 
       {/* Bottom decorative element */}
       <motion.div
+        style={{ willChange: 'transform' }}
         animate={{
           rotate: [0, 360],
         }}
